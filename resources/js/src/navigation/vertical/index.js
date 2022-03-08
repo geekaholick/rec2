@@ -9,4 +9,9 @@ export default [
     route: 'second-page',
     icon: 'FileIcon',
   },
+  {
+    title: 'Application Form',
+    route: 'application-form',
+    icon: 'FileIcon',
+  },
 ]

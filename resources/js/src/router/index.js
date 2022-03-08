@@ -39,6 +39,20 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/application-form',
+      name: 'application-form',
+      component: () => import('@/views/application-form/ApplicationForm.vue'),
+      meta: {
+        pageTitle: 'Application Form',
+        breadcrumb: [
+          {
+            text: 'Application Form',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login.vue'),
