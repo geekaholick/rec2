@@ -58,6 +58,21 @@ const router = new VueRouter({
       path: '*',
       redirect: 'error-404',
     },
+// protocol route
+    {
+      path: '/protocol-page',
+      name: 'protocol-page',
+      component: () => import('@/views/application-form/Protocol.vue'),
+      meta: {
+        pageTitle: 'Protocol Page',
+        breadcrumb: [
+          {
+            text: 'Protocol Page',
+            active: true,
+          },
+        ],
+      },
+    },
   ],
 })
 

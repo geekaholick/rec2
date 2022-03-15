@@ -1,0 +1,199 @@
+<template>
+  <b-card-code title="I. Personal Services(PS)">
+    <div>
+      <b-form
+        ref="form"
+        :style="{height: trHeight}"
+        class="repeater-form"
+        @submit.prevent="repeateAgain"
+      >
+        <!-- Row Loop for salaries -->
+        <b-row
+          v-for="(item, index) in items"
+          :id="item.id"
+          :key="item.id"
+          ref="row"
+        >
+          <!-- Personal  -->
+          <b-col md="2">
+            <b-form-group
+              label="Personal"
+              label-for="personal"
+            >
+              <b-form-input
+                id="personal"
+                v-model="item.personal"
+                type="number"
+                placeholder="PHP/DOLLARS"
+              />
+            </b-form-group>
+          </b-col>
+
+          <!-- External source  -->
+          <b-col md="2">
+            <b-form-group
+              label="External-Source"
+              label-for="external-source"
+            >
+              <b-form-input
+                id="external-source"
+                v-model="item.externalSource"
+                type="number"
+                placeholder="PHP/DOLLARS"
+              />
+            </b-form-group>
+          </b-col>
+
+          <!-- Internal source  -->
+          <b-col md="2">
+            <b-form-group
+              label="Internal-Source"
+              label-for="internal-source"
+            >
+              <b-form-input
+                id="internal-source"
+                v-model="item.internalSource"
+                type="number"
+                placeholder="PHP/DOLLARS"
+              />
+            </b-form-group>
+          </b-col>
+
+          <!-- Total source  -->
+          <b-col md="2">
+            <b-form-group
+              label="TOTAL"
+              label-for="total"
+            >
+              <b-form-input
+                id="total"
+                v-model="item.total"
+                type="number"
+                placeholder="PHP/DOLLARS"
+              />
+            </b-form-group>
+          </b-col>
+          <!-- Remove Button -->
+          <b-col
+            lg="3"
+            md="3"
+            class="mb-50"
+          >
+            <b-button
+              v-ripple.400="'rgba(234, 84, 85, 0.15)'"
+              variant="outline-danger"
+              class="mt-0 mt-md-2"
+              @click="removeItem(index)"
+            >
+              <feather-icon
+                icon="XIcon"
+                class="mr-25"
+              />
+              <span>Delete</span>
+            </b-button>
+          </b-col>
+          <b-col cols="12">
+            <hr>
+          </b-col>
+        </b-row>
+
+      </b-form>
+    </div>
+    <b-button
+      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+      variant="primary"
+      @click="repeateAgain"
+    >
+      <feather-icon
+        icon="PlusIcon"
+        class="mr-25"
+      />
+      <span>Add Salaries</span>
+    </b-button>
+    <!-- honoraria component -->
+    <budget-sheet-honoraria ref="honorariaProps"/>
+  </b-card-code>
+</template>
+
+<script>
+import BCardCode from '@core/components/b-card-code'
+import {
+  BForm, BFormGroup, BFormInput, BRow, BCol, BButton,
+} from 'bootstrap-vue'
+import { heightTransition } from '@core/mixins/ui/transition'
+import Ripple from 'vue-ripple-directive'
+//import for honoraria
+import BudgetSheetHonoraria from './BudgetSheetHonoraria.vue'
+
+export default {
+  components: {
+    BCardCode,
+    BForm,
+    BRow,
+    BCol,
+    BButton,
+    BFormGroup,
+    BFormInput,
+    BudgetSheetHonoraria,
+  },
+  directives: {
+    Ripple,
+  },
+  mixins: [heightTransition],
+  data() {
+    return {
+      items: [{
+        id: 1,
+        personal: null,
+        externalSource: null,
+        internalSource: null,
+        total: null,
+      }],
+      honorariaItems: null,
+      nextTodoId: 2,
+    }
+  },
+  mounted() {
+    this.initTrHeight()
+  },
+  created() {
+    window.addEventListener('resize', this.initTrHeight)
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.initTrHeight)
+  },
+  updated(){
+    // honoraria data from honoraria component
+    var honorariaProps = this.$refs.honorariaProps.items;
+    this.honorariaItems = honorariaProps;
+  },
+  methods: {
+    repeateAgain() {
+      this.items.push({
+        id: this.nextTodoId += this.nextTodoId,
+      })
+
+      this.$nextTick(() => {
+        this.trAddHeight(this.$refs.row[0].offsetHeight)
+      })
+    },
+    removeItem(index) {
+      this.items.splice(index, 1)
+      this.trTrimHeight(this.$refs.row[0].offsetHeight)
+    },
+    initTrHeight() {
+      this.trSetHeight(null)
+      this.$nextTick(() => {
+        this.trSetHeight(this.$refs.form.scrollHeight)
+      })
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.repeater-form {
+  overflow: hidden;
+  transition: .35s height;
+}
+</style>

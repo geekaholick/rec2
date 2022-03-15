@@ -13,6 +13,11 @@ export default [
         route: 'second-page',
         icon: 'FileIcon',
       },
+      {
+        title: 'Protocol Page',
+        route: 'protocol-page',
+        icon: 'FileIcon',
+      },
     ],
   },
 ]
